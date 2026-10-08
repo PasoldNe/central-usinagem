@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 838 330" fill="none">
+  <defs>
+    <pattern id="streets" width="55" height="42" patternTransform="rotate(-29)" patternUnits="userSpaceOnUse">
+      <path d="M0 0H55V42H0ZM27 0V42M0 21H55" stroke="#30445f" stroke-width=".8"/>
+    </pattern>
+  </defs>
+  <rect width="838" height="330" fill="url(#streets)" opacity=".38"/>
+  <g stroke="#30445f">
+    <path d="M-40 110 130 59 270 50 460 4 670-42M-20 124 138 77 287 63 473 16 690-30" stroke-width="3"/>
+    <path d="M310 360 354 228 438 177 501 92 516-40M316 360 369 233 455 177 515 96 536-40M584 360 615 218 678 149 742 104 791 14" stroke-width="2.5"/>
+    <path d="m45 240 82-100 138-55 120 170M96 360 197 176 307 119 345 52M556-10 591 66 704 170 812 200M453 330 545 190 568 106 660 61 796 55M-20 193 104 180 245 234 372 251M658 360 722 231 845 208" stroke-width="1.4"/>
+    <path d="M450 0 456 60 393 107 409 150 365 189M201 0 223 49 268 65 281 107 351 128M704 0 687 65 757 118 789 190 855 211" stroke-width=".8"/>
+  </g>
+</svg>
