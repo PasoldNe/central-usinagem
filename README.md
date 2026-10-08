@@ -28,7 +28,7 @@ npm run preview
 
 ## Dados pendentes
 
-Todos os dados comerciais não confirmados estão como **A COMBINAR**. Consulte `docs/A-COMBINAR.md` antes de colocar o site em produção. Os números e a localização dos mockups não foram assumidos como informações reais.
+Todos os dados comerciais não confirmados estão como **A COMBINAR**. O questionário preenchível completo está em `docs/A-COMBINAR.md`. Os números e a localização dos mockups não foram assumidos como informações reais.
 
 Quando o WhatsApp for confirmado, substitua `company.whatsapp` em `src/content.ts` por DDI + DDD + número, somente dígitos. O botão abrirá o WhatsApp automaticamente. Os botões dos mapas passam a abrir os destinos quando URLs HTTPS reais forem cadastradas. Enquanto os dados estiverem pendentes, esses botões mostram o diálogo correspondente.
 
@@ -41,7 +41,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Os testes verificam navegação, diálogos, restauração de foco, solicitação copiada, tema salvo, carregamento dos assets e ausência de overflow em oito larguras (320 a 1920 pixels). As capturas desktop e mobile são geradas em `artifacts/` (ignorado pelo Git). Para testar o build já gerado em vez do servidor de desenvolvimento, execute com a variável `TEST_PRODUCTION=1`.
+Os testes verificam navegação, diálogos, restauração de foco, solicitação copiada, tema salvo, carregamento dos assets e ausência de overflow em nove larguras (320 a 2560 pixels), além da estabilidade do cabeçalho e da visibilidade dos títulos após navegar pelo menu. As capturas desktop e mobile são geradas em `artifacts/` (ignorado pelo Git). Para testar o build já gerado em vez do servidor de desenvolvimento, execute com a variável `TEST_PRODUCTION=1`.
 
 ## Interações e acessibilidade
 
@@ -54,7 +54,7 @@ Os testes verificam navegação, diálogos, restauração de foco, solicitação
 
 ## Referências e fidelidade
 
-A composição segue os anexos em 1672 × 941 px. As diferenças deliberadas são os dados substituídos por A COMBINAR, o mapa ilustrativo com seus rótulos substituídos e a adaptação para celular. Não se declara igualdade de 100% dos pixels: os anexos são imagens rasterizadas, e a página contém texto real renderizado pelo navegador.
+A identidade visual usa os anexos como referência. Na revisão solicitada, o conteúdo passou a usar um contêiner central de no máximo 1240 px, com tipografia e espaçamentos proporcionais. O cabeçalho mantém tamanho e posição durante toda a rolagem. O recorte da flange exclui o cabeçalho e os textos da imagem original. Os dados não confirmados permanecem A COMBINAR e o mapa usa uma base abstrata sem endereço fictício. Não se declara igualdade de 100% dos pixels: os anexos são imagens rasterizadas, e a página contém texto real renderizado pelo navegador.
 
 As fotografias são ilustrativas e vieram dos anexos do solicitante. Máquinas, marcas, certificações, capacidades e posse dos equipamentos precisam de confirmação. Para trocar as fotos por arquivos independentes, altere `.hero-art` e `.machine-photo` em `src/styles.css`.
 

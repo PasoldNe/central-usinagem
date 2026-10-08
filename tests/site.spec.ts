@@ -59,7 +59,47 @@ test('desktop: composição, navegação, contato, tema e fotos', async ({ page,
   expect(failedResponses).toEqual([])
 })
 
-for (const width of [320, 360, 390, 768, 1024, 1440, 1672, 1920]) {
+test('cabeçalho estável durante a rolagem e títulos visíveis nas âncoras', async ({ page }) => {
+  await page.setViewportSize({ width: 1672, height: 941 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await page.evaluate(() => document.fonts.ready)
+  const header = page.locator('.site-header')
+  const readHeader = () => header.evaluate(async element => {
+    // Allow both the scroll event and React's update to reach the rendered frame.
+    await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+    const { left, top, width, height } = element.getBoundingClientRect()
+    const logoFontSize = getComputedStyle(element.querySelector('.wordmark')!).fontSize
+    return { left, top, width, height, logoFontSize }
+  })
+  const initial = await readHeader()
+  expect(initial.top).toBe(18)
+  expect(initial.height).toBe(68)
+  expect(initial.width).toBeLessThanOrEqual(1240)
+
+  for (const position of [150, 'machines', 0] as const) {
+    await page.evaluate(target => {
+      const top = target === 'machines'
+        ? document.querySelector('#maquinas')!.getBoundingClientRect().top + window.scrollY
+        : target
+      window.scrollTo({ top, behavior: 'instant' })
+    }, position)
+    await expect.poll(readHeader).toEqual(initial)
+  }
+
+  for (const [name, id] of [['Capacidade', 'capacidade'], ['Serviços', 'servicos'], ['Máquinas', 'maquinas'], ['Contato', 'contato']] as const) {
+    await page.getByRole('navigation').getByRole('link', { name, exact: true }).click()
+    await expect(page).toHaveURL(new RegExp(`#${id}$`))
+    await expect.poll(() => page.locator(`#${id} h2`).evaluate(heading => {
+      const title = heading.getBoundingClientRect()
+      const headerBottom = document.querySelector('.site-header')!.getBoundingClientRect().bottom
+      return title.top >= headerBottom + 8 && title.bottom <= window.innerHeight
+    }), { message: `O título de ${name} deve ficar inteiro abaixo do cabeçalho` }).toBe(true)
+    expect(await readHeader()).toEqual(initial)
+  }
+})
+
+for (const width of [320, 360, 390, 768, 1024, 1440, 1672, 1920, 2560]) {
   test(`layout sem overflow horizontal em ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 600 ? 844 : 941 })
     await page.goto('/')
@@ -78,6 +118,16 @@ for (const width of [320, 360, 390, 768, 1024, 1440, 1672, 1920]) {
       }).map(el => ({ tag: el.tagName, class: el.getAttribute('class'), right: Math.round(el.getBoundingClientRect().right), text: el.textContent?.slice(0, 60) }))
     })
     expect(documentOverflow).toEqual([])
+    if (width >= 1440) {
+      const containers = await page.locator('.site-header, .section-wide, .section-narrow').evaluateAll(elements => elements.map(element => {
+        const { left, width } = element.getBoundingClientRect()
+        return { className: element.className, width, centerOffset: Math.abs(left + width / 2 - document.body.getBoundingClientRect().width / 2) }
+      }))
+      for (const container of containers) {
+        expect(container.width, `${container.className}: largura máxima`).toBeLessThanOrEqual(1240)
+        expect(container.centerOffset, `${container.className}: centralização`).toBeLessThanOrEqual(1)
+      }
+    }
     if (width === 390) {
       await mkdir('artifacts', { recursive: true })
       await page.screenshot({ path: 'artifacts/mobile-full.png', fullPage: true })

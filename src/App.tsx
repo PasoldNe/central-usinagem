@@ -75,14 +75,11 @@ export default function App() {
   const [panel, setPanel] = useState<Panel | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [compact, setCompact] = useState(false)
   const [light, setLight] = useState(() => localStorage.getItem('central-usinagem-theme') === 'light')
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 100)
-      const machinesSection = document.getElementById('maquinas')
-      setCompact(Boolean(machinesSection && window.scrollY >= machinesSection.offsetTop - 160))
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -107,7 +104,7 @@ export default function App() {
 
   return <>
     <a className="skip-link" href="#inicio">Pular para o conteúdo</a>
-    <header className={`site-header${scrolled ? ' scrolled' : ''}${compact ? ' compact' : ''}`}>
+    <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
       <a className="wordmark" href="#inicio" aria-label="Central Usinagem — início"><strong>CENTRAL</strong><span>USINAGEM</span></a>
       <button className="mobile-menu icon-button" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Fechar navegação' : 'Abrir navegação'} aria-expanded={menuOpen} aria-controls="navigation">{menuOpen ? <X /> : <Menu />}</button>
       <nav id="navigation" className={menuOpen ? 'open' : ''} aria-label="Navegação principal">
@@ -144,11 +141,11 @@ export default function App() {
           <div className="authority-data">
             <div className="main-metrics">
               <div className="metric"><h3>PRECISÃO DIMENSIONAL</h3><strong className={company.precision === PENDING ? 'pending-metric' : ''}>{company.precision}</strong><p>Tolerâncias estreitas para peças<br className="desktop-break" /> técnicas e alto desempenho.</p></div>
-              <div className="metric"><h3>INSPEÇÃO DE QUALIDADE</h3><strong className={company.inspection === PENDING ? 'pending-metric' : ''}>{company.inspection}</strong><p>Das peças inspecionadas com<br className="desktop-break" /> equipamentos de medição certificados.</p></div>
+              <div className="metric"><h3>INSPEÇÃO DE QUALIDADE</h3><strong className={company.inspection === PENDING ? 'pending-metric' : ''}>{company.inspection}</strong><p>Critérios e equipamentos de inspeção: {PENDING}.</p></div>
             </div>
             <div className="secondary-metrics">
-              <div><TechnicalIcon name="cog" /><div><div className="secondary-metric-value"><strong>{company.experience}</strong><span>ANOS<br />DE EXPERIÊNCIA</span></div><p>Conhecimento técnico a serviço do seu projeto.</p></div></div>
-              <div><TechnicalIcon name="factory" /><div><div className="secondary-metric-value"><strong>{company.deliveredProjects}</strong><span>PROJETOS<br />ENTREGUES</span></div><p>Do protótipo à produção em série.</p></div></div>
+              <div><TechnicalIcon name="cog" /><div><div className="secondary-metric-value"><strong>{company.experience}</strong><span>ANOS DE EXPERIÊNCIA</span></div><p>Conhecimento técnico a serviço do seu projeto.</p></div></div>
+              <div><TechnicalIcon name="factory" /><div><div className="secondary-metric-value"><strong>{company.deliveredProjects}</strong><span>PROJETOS ENTREGUES</span></div><p>Do protótipo à produção em série.</p></div></div>
             </div>
           </div>
         </div>
@@ -162,19 +159,18 @@ export default function App() {
 
       <section className="machines-location section-narrow" aria-label="Estrutura e localização">
         <div id="maquinas" className="machines">
-          <div className="machines-heading"><div><Eyebrow>NOSSO PARQUE DE MÁQUINAS</Eyebrow><h2>Equipamentos de alta performance<br />para <span className="blue">resultados consistentes.</span></h2></div><p>Contamos com máquinas de última geração para atender projetos de alta complexidade, com precisão, agilidade e confiabilidade.</p></div>
+          <div className="machines-heading"><div><Eyebrow>NOSSO PARQUE DE MÁQUINAS</Eyebrow><h2>Equipamentos de alta performance<br />para <span className="blue">resultados consistentes.</span></h2></div><p>Conheça os equipamentos de referência. Modelos, disponibilidade e capacidades: A COMBINAR.</p></div>
           <div className="machine-grid">{machines.map(machine => <article className="machine-card" key={machine.id}>
             <div className={`machine-photo ${machine.id}`} role="img" aria-label={`Imagem ilustrativa de ${machine.title}, conforme o mockup fornecido`} />
             <div className="machine-copy"><h3>{machine.title}</h3><p>{machine.description}</p><div className="machine-specs">{machine.specs.map(spec => <div key={spec.label}><TechnicalIcon name={spec.icon} /><div><strong>{spec.value}</strong><span>{spec.label}</span></div></div>)}</div></div>
           </article>)}</div>
+          <p className="illustration-note">Imagens ilustrativas. Parque de máquinas real: {PENDING}.</p>
         </div>
         <div id="contato" className="location">
-          <div className="location-copy"><Eyebrow>LOCALIZAÇÃO</Eyebrow><h2>Estamos em<br /><span className="blue">{company.city}.</span></h2><p>Nossa estrutura está localizada em um polo estratégico, com fácil acesso às principais vias e atendimento a clientes de todo o Brasil.</p><div className="location-details"><div><TechnicalIcon name="pin" /><div><strong>{company.address}</strong><span>{company.district} — {company.city} / {company.state}<br />CEP {company.postalCode}</span></div></div><div><TechnicalIcon name="clock" /><div><strong>Horário de atendimento</strong><span>{company.businessDays}<br />{company.businessHours}</span></div></div></div></div>
+          <div className="location-copy"><Eyebrow>LOCALIZAÇÃO</Eyebrow><h2>Estamos em<br /><span className="blue">{company.city}.</span></h2><p>Endereço, região de atendimento e orientações para visita: A COMBINAR.</p><div className="location-details"><div><TechnicalIcon name="pin" /><div><strong>{company.address}</strong><span>{company.district} — {company.city} / {company.state}<br />CEP {company.postalCode}</span></div></div><div><TechnicalIcon name="clock" /><div><strong>Horário de atendimento</strong><span>{company.businessDays}<br />{company.businessHours}</span></div></div></div></div>
           <div className="map-panel" aria-label="Mapa ilustrativo. Localização da Central Usinagem A COMBINAR.">
             <div className="map-art" aria-hidden="true" />
             <div className="map-source-mask" aria-hidden="true" />
-            <span className="map-route first">A COMBINAR</span><span className="map-route second">A COMBINAR</span>
-            <div className="map-road"><span>LOCALIZAÇÃO</span><strong>{PENDING}</strong></div>
             <div className="map-marker"><TechnicalIcon name="pin" /><span><strong>CENTRAL</strong> USINAGEM</span></div>
             <div className="map-city">{company.city}</div>
             <div className="map-actions"><button className="button primary" onClick={() => maps(company.googleMapsUrl)}><TechnicalIcon name="pin" />Google Maps<ArrowRight /></button><button className="button secondary" onClick={() => maps(company.appleMapsUrl)}><AppleIcon />Apple Maps<ArrowRight /></button></div>
@@ -183,7 +179,7 @@ export default function App() {
       </section>
     </main>
 
-    <div className={`floating-actions${compact ? ' visible' : ''}`}><button className="theme-toggle icon-button" onClick={() => setLight(!light)} aria-label={light ? 'Ativar modo escuro' : 'Ativar modo claro'} title={light ? 'Modo escuro' : 'Modo claro'}>{light ? <Moon /> : <Sun />}</button><button className="whatsapp-button" onClick={whatsapp} aria-label="Falar com a Central Usinagem pelo WhatsApp"><WhatsAppIcon /></button></div>
+    <div className="floating-actions"><button className="theme-toggle icon-button" onClick={() => setLight(!light)} aria-label={light ? 'Ativar modo escuro' : 'Ativar modo claro'} title={light ? 'Modo escuro' : 'Modo claro'}>{light ? <Moon /> : <Sun />}</button><button className="whatsapp-button" onClick={whatsapp} aria-label="Falar com a Central Usinagem pelo WhatsApp"><WhatsAppIcon /></button></div>
     {panel && <ContactDialog key={panel.kind + panel.title} panel={panel} onClose={() => setPanel(null)} onContact={contact} />}
   </>
 }
