@@ -41,7 +41,9 @@ p, h1, h2, h3 { margin: 0; }
   backdrop-filter: blur(16px); transition: background .2s, box-shadow .2s;
 }
 .site-header.scrolled { background: #0d1520f5; box-shadow: 0 8px 30px #0003; }
-.wordmark { display: inline-flex; align-items: baseline; gap: 8px; font-size: 23px; letter-spacing: -.65px; white-space: nowrap; }
+.wordmark { display: inline-flex; align-items: center; gap: 12px; font-size: 23px; letter-spacing: -.65px; white-space: nowrap; }
+.brand-symbol { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; }
+.brand-name { display: inline-flex; align-items: baseline; gap: 8px; }
 .wordmark strong { font-weight: 800; }
 .wordmark span { font-weight: 350; }
 .site-header nav { display: flex; align-items: center; gap: 36px; font-size: 14px; }
@@ -91,7 +93,7 @@ p, h1, h2, h3 { margin: 0; }
 .secondary-metrics > div + div { border-left: 1px solid var(--line); padding-left: 26px; padding-right: 0; }
 .secondary-metrics svg { width: 36px; height: 36px; color: #aac2e6; flex-shrink: 0; margin-top: 3px; }
 .secondary-metric-value { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
-.secondary-metric-value strong { color: var(--soft); font-size: 22px; letter-spacing: -.8px; font-weight: 800; white-space: nowrap; }
+.secondary-metric-value strong { color: var(--soft); font-size: 22px; letter-spacing: -.8px; font-weight: 800; }
 .secondary-metric-value span { color: #aac2e6; font-size: 9px; line-height: 1.6; letter-spacing: 1.7px; }
 .secondary-metric-value span br { display: none; }
 .secondary-metrics p { color: var(--muted); font-size: 12px; font-weight: 350; line-height: 1.5; margin-top: 10px; }
@@ -149,6 +151,8 @@ p, h1, h2, h3 { margin: 0; }
 .map-marker span { font-size: 16px; font-weight: 350; white-space: nowrap; }
 .map-marker strong { font-weight: 700; }
 .map-city { position: absolute; top: 146px; left: 20px; right: 20px; text-align: center; color: #99b3d6; font-size: 14px; letter-spacing: 1px; }
+.map-city small { display: block; font-size: 11px; letter-spacing: 0; margin-top: 10px; line-height: 1.6; }
+.location-copy .visit-note { font-size: 13px; color: var(--soft); margin-top: 20px; }
 .map-actions { position: absolute; bottom: 22px; left: 22px; right: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .map-actions .button { min-height: 50px; font-size: 13px; gap: 10px; padding: 0 14px; }
 .map-actions .button.secondary { background: #0b131ce6; border-color: #2d4058; }
@@ -168,14 +172,23 @@ p, h1, h2, h3 { margin: 0; }
 .detail-dialog h2 { font-size: 36px; line-height: 1.1; letter-spacing: -1.2px; margin-top: 22px; }
 .detail-dialog p { color: var(--muted); font-size: 16px; line-height: 1.55; margin-top: 18px; }
 .detail-dialog .button { min-height: 54px; font-size: 16px; margin-top: 20px; width: 100%; }
-.contact-channels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-block: 24px; margin-block: 20px; border-block: 1px solid var(--line); }
-.contact-channels span, .dialog-info span { display: block; font-size: 12px; color: var(--muted); }
-.contact-channels strong, .dialog-info strong { display: block; font-size: 16px; font-weight: 550; margin-top: 7px; }
+/* Native dialog top layer keeps the contact sheet above navigation and floating actions. */
+.contact-sheet { position: fixed; inset: auto 16px 24px; margin: 0 auto; width: min(580px, calc(100% - 32px)); padding: 34px; animation: sheet-enter .2s ease-out; }
+.contact-sheet h2 { font-size: 30px; margin-top: 18px; }
+.contact-options { display: grid; gap: 12px; margin-top: 24px; }
+.contact-option { display: flex; align-items: center; gap: 16px; padding: 17px 18px; border: 1px solid var(--line); border-radius: 11px; background: var(--bg); transition: border-color .2s, background .2s; }
+.contact-option:hover { border-color: #7098ca; background: var(--surface); }
+.contact-option > svg { width: 28px; height: 28px; flex-shrink: 0; color: var(--soft); }
+.contact-option.whatsapp-option > svg:first-child { color: #00cf67; }
+.contact-option > svg:last-child { width: 20px; height: 20px; margin-left: auto; }
+.contact-option span { min-width: 0; }
+.contact-option strong { display: block; font-size: 16px; font-weight: 650; }
+.contact-option small { display: block; color: var(--muted); font-size: 12px; line-height: 1.6; margin-top: 3px; overflow-wrap: anywhere; }
+.dialog-info span { display: block; font-size: 12px; color: var(--muted); }
+.dialog-info strong { display: block; font-size: 16px; font-weight: 550; margin-top: 7px; }
+@keyframes sheet-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .dialog-info { margin-block: 24px; padding: 20px; border: 1px solid var(--line); border-radius: 9px; }
 .dialog-info span:not(:first-child) { margin-top: 18px; }
-.detail-dialog label { display: block; font-size: 14px; font-weight: 550; margin-bottom: 10px; }
-.detail-dialog textarea { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 14px; resize: vertical; line-height: 1.5; }
-.detail-dialog textarea::placeholder { color: var(--muted); }
 .detail-dialog .contact-note { font-size: 12px; margin-top: 14px; }
 .button:disabled { opacity: .5; cursor: default; }
 @keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -276,7 +289,10 @@ p, h1, h2, h3 { margin: 0; }
   :root { --page-gutter: 24px; }
   html { scroll-padding-top: 100px; }
   .site-header { top: 14px; height: 62px; padding-inline: 18px; }
-  .wordmark { font-size: 20px; gap: 6px; }
+  .wordmark { font-size: 20px; gap: 10px; }
+  .brand-symbol { width: 36px; height: 36px; }
+  .brand-name { flex-direction: column; align-items: flex-start; gap: 0; line-height: 1.1; }
+  .brand-name > span { font-size: 12px; letter-spacing: 2px; margin-top: 4px; }
   .mobile-menu { display: grid !important; width: 34px; height: 34px; background: transparent; color: var(--text); }
   .site-header nav { display: none; position: absolute; left: -1px; right: -1px; top: 70px; padding: 14px 22px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; }
   .site-header nav.open { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
@@ -342,7 +358,10 @@ p, h1, h2, h3 { margin: 0; }
   .detail-dialog { padding: 35px 24px 26px; }
   .detail-dialog .eyebrow { font-size: 8px; letter-spacing: 2px; }
   .detail-dialog h2 { font-size: 30px; }
-  .contact-channels { grid-template-columns: 1fr; gap: 18px; }
+  .contact-sheet { bottom: 16px; padding: 32px 22px 24px; }
+  .contact-sheet h2 { font-size: 27px; padding-right: 14px; }
+  .contact-option { padding: 14px; gap: 12px; }
+  .contact-option > svg { width: 24px; height: 24px; }
 }
 @media (max-width: 360px) {
   :root { --page-gutter: 20px; }
